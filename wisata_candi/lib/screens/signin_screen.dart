@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 
-class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  SignInScreen({super.key});
 
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
   //TODO: 1. deklarasikan variabel
   final TextEditingController _usernameController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
 
-  String _errorText = '',
+  String _errorText = '';
+
   bool _isSignIn = false;
+
   bool _obscurePassword = true;
 
   @override
@@ -20,48 +29,77 @@ class SignInScreen extends StatelessWidget {
       ),
       //TODO: 3. pasang body
       body: Center(
-        child: Form(
-          child: Column(
-            //TODO: 4. atur mainaxisalignment dan crossaxisalignment
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            //TODO: 5. buat textformfield untuk nama pengguna
-            TextFormField(
-              controller: _usernameController,
-              decoration: const InputDecoration(
-                labelText: 'Nama pengguna',
-                hintText: 'Masukkan nama pengguna',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            //TODO: 6. buat textformfield untuk kata sandi
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Kata sandi',
-                hintText: 'Masukkan kata sandi',
-                border: const OutlineInputBorder(),
-                errorText: _errorText.isNotEmpty ? _errorText : null,
-                suffixIcon: IconButton(onPressed: (){}, 
-                icon: Icon(
-                  _obscurePassword ? Icons.visibility_off : Icons.visibility,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              child: Column(
+                //TODO: 4. atur mainaxisalignment dan crossaxisalignment
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                //TODO: 5. buat textformfield untuk nama pengguna
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Nama pengguna',
+                    hintText: 'Masukkan nama pengguna',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
+                //TODO: 6. buat textformfield untuk kata sandi
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Kata sandi',
+                    hintText: 'Masukkan kata sandi',
+                    border: const OutlineInputBorder(),
+                    errorText: _errorText.isNotEmpty ? _errorText : null,
+                    suffixIcon: IconButton(onPressed: (){
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    }, 
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                    ),
+                    ),
+                    ),
+                    obscureText: _obscurePassword,
+                  ),
+                //TODO: 7. buat elevatedbutton untuk sign in
+                const SizedBox(height: 20,),
+                ElevatedButton(
+                  onPressed: () {}, 
+                  child: const Text('Sign In'),
                 ),
-                ),
-                obscureText: _obscurePassword,
-              ),
-            //TODO: 7. buat elevatedbutton untuk sign in
-            const SizedBox(height: 20,),
-            ElevatedButton(onPressed: () {}, child: const Text('Sign In'),
-            ),
-            //TODO: 8. pasang textbutton untuk signup
-            const SizedBox(height: 10,),
-            TextButton(onPressed: () {}, child: Text('Belum punya akun? Daftar di sini.'),
-            ),
-          ],
-        )
+                //TODO: 8. pasang textbutton untuk signup
+                const SizedBox(height: 10,),
+               //TextButton(
+               //   onPressed: () {}, 
+               //   child: Text('Belum punya akun? Daftar di sini.'),
+               // ),
+               RichText(
+                text: TextSpan(
+                  text: 'Belum punya akun? ',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                  children: [
+                    TextSpan(
+                      text: 'Daftar di sini.',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,                    
+                      ),
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                    ),
+                  ],
+                )
+                )
+              ],
+            )),
+          ),
         ),
       ),
     );
